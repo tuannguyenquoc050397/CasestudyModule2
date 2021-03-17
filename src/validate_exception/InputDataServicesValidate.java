@@ -1,4 +1,4 @@
-package validate_input_data;
+package validate_exception;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,96 +7,98 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InputDataCustomerValidate {
+public class InputDataServicesValidate {
     Scanner scanner = new Scanner(System.in);
 
-    public String inputNameCustomer() throws NameException {
-        String regex = "^([A-Z][a-z]*\\s)+[A-Z][a-z]*$";
-        Pattern pattern = Pattern.compile(regex);
-        String name;
-        while (true) {
-            try {
-                name = scanner.nextLine();
-                Matcher matcher = pattern.matcher(name);
-                if (!matcher.matches()) {
-                    throw new NameException("Ten phai viet hoa chu cai dau, chi co 1 khoang trang o giua 2 tu" +
-                            "\n vidu: Nguyen Quoc Tuan");
-                } else {
-                    break;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public String inputIdServices(String nameServices) {
+        String regex;
+        switch (nameServices) {
+            case "Villa":
+                regex = "^[S][V][V][L][-]\\d{4}$";
+                break;
+            case "House":
+                regex = "^[S][V][H][O][-]\\d{4}$";
+                break;
+            case "Room":
+                regex = "^[S][V][R][O][-]\\d{4}$";
+                break;
+            default:
+                regex = "";
+                System.out.println("viet sai ten dich vu nameServices = " + nameServices + "?????" +
+                        "\n Enter de thoat");
         }
-        return name;
+        Pattern pattern = Pattern.compile(regex);
+        boolean check = true;
+        String idService;
+        do {
+            idService = scanner.nextLine();
+            Matcher matcher = pattern.matcher(idService);
+            check = matcher.matches();
+            if (!check) {
+                System.out.println("ban da nhap sai, hay nhap theo format SVXX-YYYY, hay nhap lai");
+            }
+        } while (!check);
+        return idService;
     }
 
-    public String inputEmailCustomer() throws EmailException {
-        String regex = "^[A-Za-z0-9]+@[A-Za-z0-9]+(\\.[A-Za-z0-9]+){1,2}$";
-        Pattern pattern = Pattern.compile(regex);
-        String email;
-        while (true) {
-            try {
-                email = scanner.nextLine();
-                Matcher matcher = pattern.matcher(email);
-                if (!matcher.matches()) {
-                    throw new EmailException("email co duy nhat 1 '@' va co 1 den 2 dau '.' " +
-                            "\nvidu: abc@gmail.com.vn ");
-                } else {
-                    break;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    public String inputNameServices() {
+        String regex = "[A-Z][a-z0-9]+";
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(regex);
+        String nameServices;
+        do {
+            nameServices = scanner.nextLine();
+            matcher = pattern.matcher(nameServices);
+            if (!matcher.matches()) {
+                System.out.println("ban da nhap sai, viet hoa chu cai dau, hay nhap lai");
             }
-        }
-        return email;
+
+        } while (!matcher.matches());
+        return nameServices;
     }
 
-    public String inputGenderCustomer() throws GenderException {
-        String gender;
-        String genderResult;
-        while (true) {
-            try {
-                gender = scanner.nextLine();
-                String genderTrim = gender.trim();
-                if (genderTrim.length() == 4 || genderTrim.length() == 6) {
-                    String genderUp = genderTrim.toUpperCase();
-                    switch (genderUp) {
-                        case "MALE":
-                            genderResult = "Male";
-                            break;
-                        case "FEMALE":
-                            genderResult = "Female";
-                            break;
-                        case "UNKNOW":
-                            genderResult = "Unknow";
-                            break;
-                        default:
-                            throw new GenderException("gioi tinh phai la male, female hoac unknow");
-                    }
-                    System.out.println(genderResult);
-                    break;
-                } else {
-                    throw new GenderException("gioi tinh phai la male, female hoac unknow");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    public String inputTypeOfRents() {
+        String regex = "[A-Z][a-z]+";
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(regex);
+        String typeOfRents;
+        do {
+            typeOfRents = scanner.nextLine();
+            matcher = pattern.matcher(typeOfRents);
+            if (!matcher.matches()) {
+                System.out.println("ban da nhap sai, viet hoa chu cai dau, hay nhap lai");
             }
-        }
-        return genderResult;
+
+        } while (!matcher.matches());
+        return typeOfRents;
     }
 
-    public String inputIdCardCustomer() throws IdCardException {
-        String regex = "^\\d{3}[ ]\\d{3}[ ]\\d{3}$";
-        Pattern pattern = Pattern.compile(regex);
-        String idCard;
+    public String inputTypeOfRoom() {
+        String regex = "[A-Z][a-z]+";
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(regex);
+        String typeOfRoom;
+        do {
+            typeOfRoom = scanner.nextLine();
+            matcher = pattern.matcher(typeOfRoom);
+            if (!matcher.matches()) {
+                System.out.println("ban da nhap sai, hay viet hoa chu cai dau, hay nhap lai");
+            }
+
+        } while (!matcher.matches());
+        return typeOfRoom;
+    }
+
+    public double inputAreaPool() {
+        String areaPool;
         while (true) {
             try {
-                idCard = scanner.nextLine();
-                Matcher matcher = pattern.matcher(idCard);
-                if (!matcher.matches()) {
-                    throw new IdCardException("idCard phai theo format XXX XXX XXX" +
-                            "\n vidu: 197 003 011");
+                areaPool = scanner.nextLine();
+                if (Double.parseDouble(areaPool) < 30) {
+                    throw new Exception("dien tich >30m2");
                 } else {
                     break;
                 }
@@ -104,7 +106,72 @@ public class InputDataCustomerValidate {
                 e.printStackTrace();
             }
         }
-        return idCard;
+        return Double.parseDouble(areaPool);
+    }
+
+    public double inputDayRents() {
+        String dayRents;
+        while (true) {
+            try {
+                dayRents = scanner.nextLine();
+                if (Double.parseDouble(dayRents) <= 0) {
+                    throw new Exception("chi phi thue phai >0");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Double.parseDouble(dayRents);
+    }
+
+    public int inputNumberOfPeople() {
+        String numberOfPeople;
+        while (true) {
+            try {
+                numberOfPeople = scanner.nextLine();
+                if (Integer.parseInt(numberOfPeople) < 0 || Integer.parseInt(numberOfPeople) > 20) {
+                    throw new Exception("so nguoi di cung phai >0 va <20");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Integer.parseInt(numberOfPeople);
+    }
+
+    public String inputFreeServices() {
+        String freeServices;
+        do {
+            freeServices = scanner.nextLine();
+            if (freeServices.equals("massage") || freeServices.equals("karaoke")
+                    || freeServices.equals("car") || freeServices.equals("food") || freeServices.equals("drink")) {
+                break;
+            } else {
+                System.out.println("Dịch vụ đi kèm phải là các giá trị: massage, karaoke, food, drink, car");
+            }
+        } while (true);
+        return freeServices;
+    }
+
+    public int inputFloor() {
+        String floor;
+        while (true) {
+            try {
+                floor = scanner.nextLine();
+                if (Integer.parseInt(floor) <= 0) {
+                    throw new Exception("so tang phai la so nguyen duong");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Integer.parseInt(floor);
     }
 
     public String inputDateOfBirth() throws ParseException {
@@ -203,14 +270,15 @@ public class InputDataCustomerValidate {
         return birthDay;
     }
 
-
-    public static void main(String[] args) throws GenderException {
-//        InputDataCustomerValidate a = new InputDataCustomerValidate();
-//         a.inputGenderCustomer();
-//        try {
-//            a.inputDateOfBirth();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+    public static void main(String[] args) {
+        InputDataServicesValidate a = new InputDataServicesValidate();
+        // a.inputIdServices("House");
+        //  a.inputAreaPool();
+        try {
+            String b = a.inputDateOfBirth();
+            System.out.println(b);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

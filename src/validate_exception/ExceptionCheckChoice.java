@@ -1,4 +1,4 @@
-package validate_input_data;
+package validate_exception;
 
 public class ExceptionCheckChoice extends Exception{
     public ExceptionCheckChoice(String s) {

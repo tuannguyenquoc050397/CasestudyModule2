@@ -1,4 +1,4 @@
-package validate_input_data;
+package validate_exception;
 
 public class IdCardException extends Exception {
     public IdCardException(String s) {

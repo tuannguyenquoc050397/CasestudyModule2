@@ -1,4 +1,4 @@
-package validate_input_data;
+package validate_exception;
 
 public class BirthDayException extends Exception {
 }
